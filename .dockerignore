@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+*.pyc
+candidates.db
+candidates.db-shm
+candidates.db-wal
+backups/
+bot.log
+.vscode/
+.env
+.DS_Store

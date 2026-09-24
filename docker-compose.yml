@@ -1,0 +1,21 @@
+services:
+  bot:
+    build: .
+    command: python bot.py
+    env_file: .env
+    restart: unless-stopped
+    volumes:
+      - bot_data:/data
+
+  hr_panel:
+    build: .
+    command: python hr_panel.py
+    env_file: .env
+    restart: unless-stopped
+    ports:
+      - "5050:5050"
+    volumes:
+      - bot_data:/data
+
+volumes:
+  bot_data:

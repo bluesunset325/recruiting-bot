@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Редактирование' if vacancy else 'Новая вакансия' }} — HR Panel{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <a href="{{ url_for('vacancies_list') }}" class="btn btn-outline-secondary btn-sm mb-3">
+            <i class="bi bi-arrow-left"></i> К списку вакансий
+        </a>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    <i class="bi bi-briefcase"></i>
+                    {{ 'Редактирование: ' + vacancy.title if vacancy else 'Новая вакансия' }}
+                </h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="row g-3">
+                        <div class="col-md-8">
+                            <label class="form-label">Название вакансии *</label>
+                            <input type="text" name="title" class="form-control" required
+                                   value="{{ vacancy.title if vacancy else '' }}"
+                                   placeholder="Например: Клинер">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Эмодзи</label>
+                            <input type="text" name="emoji" class="form-control"
+                                   value="{{ vacancy.emoji if vacancy else '💼' }}"
+                                   placeholder="🧹">
+                        </div>
+                    </div>
+
+                    <div class="mb-3 mt-3">
+                        <label class="form-label">Краткое описание</label>
+                        <input type="text" name="description" class="form-control"
+                               value="{{ vacancy.description if vacancy else '' }}"
+                               placeholder="Уборка квартир, офисов, после ремонта">
+                        <div class="form-text">Показывается на кнопке в боте</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Вопросы кандидату * (каждый с новой строки)</label>
+                        <textarea name="questions" class="form-control" rows="6" required
+                                  placeholder="Есть ли у вас опыт уборки? Расскажите.
+Есть ли действующая медкнижка?
+Какой график вам удобен?">{{ vacancy.questions | join('\n') if vacancy else '' }}</textarea>
+                        <div class="form-text">
+                            Бот задаст их по очереди после стандартных вопросов (ФИО, контакт, опыт)
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-robot"></i> Критерии AI-оценки</label>
+                        <input type="text" name="scoring_criteria" class="form-control"
+                               value="{{ vacancy.scoring_criteria if vacancy else '' }}"
+                               placeholder="опыт уборки, наличие медкнижки, гибкость графика">
+                        <div class="form-text">
+                            По этим критериям AI выставит кандидату оценку 1–10. Перечислите через запятую.
+                        </div>
+                    </div>
+
+                    {% if vacancy %}
+                    <input type="hidden" name="slug" value="{{ vacancy.slug }}">
+                    {% endif %}
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-check-lg"></i> Сохранить
+                        </button>
+                        <a href="{{ url_for('vacancies_list') }}" class="btn btn-outline-secondary">Отмена</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
